@@ -1,0 +1,20 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["Build"]  
+    types:
+      - completed 
+jobs:
+  # TODO: change gh-actor to something else or create user
+  if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Pull updates
+        run: git pull
+        working-directory: /home/gh-actor/project
+
+      - name: Up services
+        run: docker compose up -d
+        working-directory: /home/gh-actor/project
