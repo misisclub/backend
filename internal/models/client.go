@@ -39,6 +39,7 @@ type ClientUpdate struct {
 	Company     *string `json:"company"`
 	University  *string `json:"university"`
 	Future      *string `json:"future"`
+	Description *string `json:"description"`
 }
 
 type ClientModel struct {
@@ -53,4 +54,5 @@ type ClientModel struct {
 	Company     *string   `json:"company"`
 	Future      *string   `json:"future"`
 	University  *string   `json:"university"`
+	Description *string   `json:"description"`
 }

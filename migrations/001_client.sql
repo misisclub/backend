@@ -11,6 +11,7 @@ CREATE TABLE client (
     company VARCHAR(255),
     future VARCHAR(255),
     university VARCHAR(255),
+    description TEXT,
     password_hash TEXT NOT NULL,
     UNIQUE (phone_number)
 );

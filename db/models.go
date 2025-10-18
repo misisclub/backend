@@ -21,6 +21,7 @@ type Client struct {
 	Company      *string   `json:"company"`
 	Future       *string   `json:"future"`
 	University   *string   `json:"university"`
+	Description  *string   `json:"description"`
 	PasswordHash string    `json:"password_hash"`
 }
 

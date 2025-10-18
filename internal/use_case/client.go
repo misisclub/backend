@@ -87,6 +87,7 @@ func (s *ClientService) UpdateClient(ctx context.Context, c *models.ClientUpdate
 		Company:     c.Company,
 		Future:      c.Future,
 		University:  c.University,
+		Description: c.Description,
 	}
 	cc, err := s.clientRepo.UpdateClient(ctx, params)
 	if err != nil {
@@ -102,7 +103,9 @@ func (s *ClientService) UpdateClient(ctx context.Context, c *models.ClientUpdate
 		Profession1: cc.Profession1,
 		Profession2: cc.Profession2,
 		Company:     cc.Company,
+		Future:      cc.Future,
 		University:  cc.University,
+		Description: cc.Description,
 	}
 	return &resp, nil
 }
@@ -124,6 +127,7 @@ func (s *ClientService) GetClientByID(ctx context.Context, id uuid.UUID) (*model
 		Company:     c.Company,
 		Future:      c.Future,
 		University:  c.University,
+		Description: c.Description,
 	}
 	return resp, nil
 }

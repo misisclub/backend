@@ -35,7 +35,8 @@ set
     profession_2 = coalesce(sqlc.narg('profession_2'), profession_2),
     company      = coalesce(sqlc.narg('company'), company),
     future      = coalesce(sqlc.narg('future'), future),
-    university   = coalesce(sqlc.narg('university'), university)
+    university   = coalesce(sqlc.narg('university'), university),
+    description  = coalesce(sqlc.narg('description'), description)
 where
     id = $1
 returning *;
