@@ -82,10 +82,10 @@ func (s *ClientService) UpdateClient(ctx context.Context, c *models.ClientUpdate
 		SecondName:  c.SecondName,
 		FamilyName:  c.FamilyName,
 		Age:         c.Age,
-		PhoneNumber: c.PhoneNumber,
 		Profession1: c.Profession1,
 		Profession2: c.Profession2,
 		Company:     c.Company,
+		Future:      c.Future,
 		University:  c.University,
 	}
 	cc, err := s.clientRepo.UpdateClient(ctx, params)
@@ -122,6 +122,7 @@ func (s *ClientService) GetClientByID(ctx context.Context, id uuid.UUID) (*model
 		Profession1: c.Profession1,
 		Profession2: c.Profession2,
 		Company:     c.Company,
+		Future:      c.Future,
 		University:  c.University,
 	}
 	return resp, nil

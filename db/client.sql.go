@@ -26,7 +26,7 @@ insert into client (
 ) values (
     $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
 )
-returning id, first_name, second_name, family_name, age, phone_number, profession_1, profession_2, company, university, password_hash
+returning id, first_name, second_name, family_name, age, phone_number, profession_1, profession_2, company, future, university, password_hash
 `
 
 type CreateClientParams struct {
@@ -66,6 +66,7 @@ func (q *Queries) CreateClient(ctx context.Context, arg CreateClientParams) (Cli
 		&i.Profession1,
 		&i.Profession2,
 		&i.Company,
+		&i.Future,
 		&i.University,
 		&i.PasswordHash,
 	)
@@ -83,7 +84,7 @@ func (q *Queries) DeleteClient(ctx context.Context, id uuid.UUID) error {
 }
 
 const getClientByID = `-- name: GetClientByID :one
-select id, first_name, second_name, family_name, age, phone_number, profession_1, profession_2, company, university, password_hash from client
+select id, first_name, second_name, family_name, age, phone_number, profession_1, profession_2, company, future, university, password_hash from client
 where id = $1
 `
 
@@ -100,6 +101,7 @@ func (q *Queries) GetClientByID(ctx context.Context, id uuid.UUID) (Client, erro
 		&i.Profession1,
 		&i.Profession2,
 		&i.Company,
+		&i.Future,
 		&i.University,
 		&i.PasswordHash,
 	)
@@ -107,7 +109,7 @@ func (q *Queries) GetClientByID(ctx context.Context, id uuid.UUID) (Client, erro
 }
 
 const getClientByPhone = `-- name: GetClientByPhone :one
-select id, first_name, second_name, family_name, age, phone_number, profession_1, profession_2, company, university, password_hash from client
+select id, first_name, second_name, family_name, age, phone_number, profession_1, profession_2, company, future, university, password_hash from client
 where phone_number = $1
 `
 
@@ -124,6 +126,7 @@ func (q *Queries) GetClientByPhone(ctx context.Context, phoneNumber string) (Cli
 		&i.Profession1,
 		&i.Profession2,
 		&i.Company,
+		&i.Future,
 		&i.University,
 		&i.PasswordHash,
 	)
@@ -137,14 +140,14 @@ set
     second_name  = coalesce($3, second_name),
     family_name  = coalesce($4, family_name),
     age          = coalesce($5, age),
-    phone_number = coalesce($6, phone_number),
-    profession_1 = coalesce($7, profession_1),
-    profession_2 = coalesce($8, profession_2),
-    company      = coalesce($9, company),
+    profession_1 = coalesce($6, profession_1),
+    profession_2 = coalesce($7, profession_2),
+    company      = coalesce($8, company),
+    future      = coalesce($9, future),
     university   = coalesce($10, university)
 where
     id = $1
-returning id, first_name, second_name, family_name, age, phone_number, profession_1, profession_2, company, university, password_hash
+returning id, first_name, second_name, family_name, age, phone_number, profession_1, profession_2, company, future, university, password_hash
 `
 
 type UpdateClientParams struct {
@@ -153,10 +156,10 @@ type UpdateClientParams struct {
 	SecondName  *string   `json:"second_name"`
 	FamilyName  *string   `json:"family_name"`
 	Age         *int32    `json:"age"`
-	PhoneNumber *string   `json:"phone_number"`
 	Profession1 *string   `json:"profession_1"`
 	Profession2 *string   `json:"profession_2"`
 	Company     *string   `json:"company"`
+	Future      *string   `json:"future"`
 	University  *string   `json:"university"`
 }
 
@@ -167,10 +170,10 @@ func (q *Queries) UpdateClient(ctx context.Context, arg UpdateClientParams) (Cli
 		arg.SecondName,
 		arg.FamilyName,
 		arg.Age,
-		arg.PhoneNumber,
 		arg.Profession1,
 		arg.Profession2,
 		arg.Company,
+		arg.Future,
 		arg.University,
 	)
 	var i Client
@@ -184,6 +187,7 @@ func (q *Queries) UpdateClient(ctx context.Context, arg UpdateClientParams) (Cli
 		&i.Profession1,
 		&i.Profession2,
 		&i.Company,
+		&i.Future,
 		&i.University,
 		&i.PasswordHash,
 	)

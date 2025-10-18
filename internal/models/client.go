@@ -34,16 +34,11 @@ type ClientUpdate struct {
 	SecondName  *string `json:"second_name"`
 	FamilyName  *string `json:"family_name"`
 	Age         *int32  `json:"age"`
-	PhoneNumber *string `json:"phone_number"`
 	Profession1 *string `json:"profession_1"`
 	Profession2 *string `json:"profession_2"`
 	Company     *string `json:"company"`
 	University  *string `json:"university"`
-}
-
-type Status struct {
-	Ok  bool   `json:"ok"`
-	Msg string `json:"message"`
+	Future      *string `json:"future"`
 }
 
 type ClientModel struct {
@@ -56,5 +51,6 @@ type ClientModel struct {
 	Profession1 *string   `json:"profession_1"`
 	Profession2 *string   `json:"profession_2"`
 	Company     *string   `json:"company"`
+	Future      *string   `json:"future"`
 	University  *string   `json:"university"`
 }

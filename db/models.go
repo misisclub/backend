@@ -18,6 +18,21 @@ type Client struct {
 	Profession1  *string   `json:"profession_1"`
 	Profession2  *string   `json:"profession_2"`
 	Company      *string   `json:"company"`
+	Future       *string   `json:"future"`
 	University   *string   `json:"university"`
 	PasswordHash string    `json:"password_hash"`
+}
+
+type Org struct {
+	ID           uuid.UUID `json:"id"`
+	UserID       uuid.UUID `json:"user_id"`
+	Name         string    `json:"name"`
+	Specs        string    `json:"specs"`
+	Description  string    `json:"description"`
+	WebsiteUrl   string    `json:"website_url"`
+	LogoUrl      string    `json:"logo_url"`
+	VideoUrl     string    `json:"video_url"`
+	AdminContact string    `json:"admin_contact"`
+	Inn          string    `json:"inn"`
+	Ogrn         string    `json:"ogrn"`
 }

@@ -30,7 +30,6 @@ set
     second_name  = coalesce(sqlc.narg('second_name'), second_name),
     family_name  = coalesce(sqlc.narg('family_name'), family_name),
     age          = coalesce(sqlc.narg('age'), age),
-    phone_number = coalesce(sqlc.narg('phone_number'), phone_number),
     profession_1 = coalesce(sqlc.narg('profession_1'), profession_1),
     profession_2 = coalesce(sqlc.narg('profession_2'), profession_2),
     company      = coalesce(sqlc.narg('company'), company),
