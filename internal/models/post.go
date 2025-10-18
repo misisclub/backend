@@ -34,15 +34,3 @@ type UpdatePostRequest struct {
 	ImageURL    string `json:"image_url"`
 	FromOrg     bool   `json:"from_org"`
 }
-
-// PostResponse represents the response for post operations
-type PostResponse struct {
-	ID          uuid.UUID `json:"id"`
-	Tag         string    `json:"tag"`
-	OwnerID     uuid.UUID `json:"owner_id"`
-	Description string    `json:"description"`
-	ImageURL    string    `json:"image_url"`
-	FromOrg     bool      `json:"from_org"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
-}

@@ -19,12 +19,14 @@ func RegisterRouter(e *echo.Echo, db *pgxpool.Pool, log *logger.Logger) {
 	clubRepo := repository.NewClubRepository(db)
 	postRepo := repository.NewPostRepository(db)
 	subscriptionRepo := repository.NewSubscriptionRepository(db)
+	feedRepo := repository.NewFeedRepository(db)
 
 	clientService := usecase.NewClientService(clientRepo)
 	orgService := usecase.NewOrgService(orgRepo)
 	clubService := usecase.NewClubService(clubRepo)
 	postService := usecase.NewPostService(postRepo)
 	subscriptionService := usecase.NewSubscriptionService(subscriptionRepo)
+	feedService := usecase.NewFeedService(feedRepo)
 
 	validator := utils.NewValidator()
 
@@ -33,6 +35,7 @@ func RegisterRouter(e *echo.Echo, db *pgxpool.Pool, log *logger.Logger) {
 	clubHandler := handlers.NewClubHandler(clubService)
 	postHandler := handlers.NewPostHandler(postService, validator)
 	subscriptionHandler := handlers.NewSubscriptionHandler(subscriptionService)
+	feedHandler := handlers.NewFeedHandler(feedService, validator)
 
 	api := e.Group("/api/v1")
 
@@ -89,6 +92,14 @@ func RegisterRouter(e *echo.Echo, db *pgxpool.Pool, log *logger.Logger) {
 		subscription.GET("/user/:user_id/club/:club_id", subscriptionHandler.GetSubscriptionByUserAndClub)
 		subscription.DELETE("/:id", subscriptionHandler.DeleteSubscription)
 		subscription.DELETE("/user/:user_id/club/:club_id", subscriptionHandler.DeleteSubscriptionByUserAndClub)
+	}
+
+	// feed endpoints
+	feed := api.Group("/feed")
+	{
+		feed.GET("/subscription/:user_id", feedHandler.GetSubscriptionFeed)
+		feed.GET("/everyone", feedHandler.GetEveryoneFeed)
+		feed.GET("/club/:club_id", feedHandler.GetFeedByClubID)
 	}
 
 	log.Info("Routes successfully registered")
