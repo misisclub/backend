@@ -24,7 +24,7 @@ func NewOrgHandler(orgService *usecase.OrgService) *OrgHandler {
 	}
 }
 
-// SignUpOrg godoc
+// CreateOrg godoc
 //
 //	@Summary		Create organization
 //	@Description	create organization with given data
@@ -36,7 +36,7 @@ func NewOrgHandler(orgService *usecase.OrgService) *OrgHandler {
 //	@Failure		400 {object} utils.Err
 //	@Failure		500 {object} utils.Err
 //	@Router			/orgs [post]
-func (h *OrgHandler) SignUpOrg(c echo.Context) error {
+func (h *OrgHandler) CreateOrg(c echo.Context) error {
 	var client models.OrgCreate
 	if err := c.Bind(&client); err != nil {
 		return c.JSON(http.StatusBadRequest, utils.Err{Message: err.Error()})

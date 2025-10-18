@@ -16,7 +16,7 @@ insert into org (
 returning *;
 
 -- name: GetOrgByID :one
-select * from org where id = $1;
+select * from org where id = $1 ;
 
 -- name: UpdateOrg :one
 update org set

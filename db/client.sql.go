@@ -140,11 +140,12 @@ set
     second_name  = coalesce($3, second_name),
     family_name  = coalesce($4, family_name),
     age          = coalesce($5, age),
-    profession_1 = coalesce($6, profession_1),
-    profession_2 = coalesce($7, profession_2),
-    company      = coalesce($8, company),
-    future      = coalesce($9, future),
-    university   = coalesce($10, university)
+    phone_number = coalesce($6, phone_number),
+    profession_1 = coalesce($7, profession_1),
+    profession_2 = coalesce($8, profession_2),
+    company      = coalesce($9, company),
+    future      = coalesce($10, future),
+    university   = coalesce($11, university)
 where
     id = $1
 returning id, first_name, second_name, family_name, age, phone_number, profession_1, profession_2, company, future, university, password_hash
@@ -156,6 +157,7 @@ type UpdateClientParams struct {
 	SecondName  *string   `json:"second_name"`
 	FamilyName  *string   `json:"family_name"`
 	Age         *int32    `json:"age"`
+	PhoneNumber *string   `json:"phone_number"`
 	Profession1 *string   `json:"profession_1"`
 	Profession2 *string   `json:"profession_2"`
 	Company     *string   `json:"company"`
@@ -170,6 +172,7 @@ func (q *Queries) UpdateClient(ctx context.Context, arg UpdateClientParams) (Cli
 		arg.SecondName,
 		arg.FamilyName,
 		arg.Age,
+		arg.PhoneNumber,
 		arg.Profession1,
 		arg.Profession2,
 		arg.Company,

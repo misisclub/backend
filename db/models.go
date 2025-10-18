@@ -6,6 +6,7 @@ package db
 
 import (
 	uuid "github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type Client struct {
@@ -23,6 +24,18 @@ type Client struct {
 	PasswordHash string    `json:"password_hash"`
 }
 
+type Club struct {
+	ID           uuid.UUID `json:"id"`
+	OwnerID      uuid.UUID `json:"owner_id"`
+	Name         string    `json:"name"`
+	Specs        string    `json:"specs"`
+	Description  string    `json:"description"`
+	TgUrl        string    `json:"tg_url"`
+	LogoUrl      string    `json:"logo_url"`
+	AdminContact string    `json:"admin_contact"`
+	FromOrg      bool      `json:"from_org"`
+}
+
 type Org struct {
 	ID           uuid.UUID `json:"id"`
 	UserID       uuid.UUID `json:"user_id"`
@@ -35,4 +48,21 @@ type Org struct {
 	AdminContact string    `json:"admin_contact"`
 	Inn          string    `json:"inn"`
 	Ogrn         string    `json:"ogrn"`
+}
+
+type Post struct {
+	ID          uuid.UUID          `json:"id"`
+	Tag         string             `json:"tag"`
+	OwnerID     uuid.UUID          `json:"owner_id"`
+	Description string             `json:"description"`
+	ImageUrl    string             `json:"image_url"`
+	FromOrg     bool               `json:"from_org"`
+	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt   pgtype.Timestamptz `json:"updated_at"`
+}
+
+type Subscription struct {
+	ID     uuid.UUID `json:"id"`
+	UserID uuid.UUID `json:"user_id"`
+	ClubID uuid.UUID `json:"club_id"`
 }
