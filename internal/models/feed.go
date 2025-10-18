@@ -41,7 +41,8 @@ type PostResponse struct {
 	Tag         string    `json:"tag"`
 	OwnerID     uuid.UUID `json:"owner_id"`
 	Description string    `json:"description"`
-	ImageURL    string    `json:"image_url"`
+	ContentURL  string    `json:"content_url"`
+	IsVideo     bool      `json:"is_video"`
 	FromOrg     bool      `json:"from_org"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`

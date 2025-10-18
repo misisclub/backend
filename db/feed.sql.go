@@ -12,7 +12,7 @@ import (
 )
 
 const getEveryoneFeed = `-- name: GetEveryoneFeed :many
-SELECT id, tag, owner_id, description, image_url, from_org, created_at, updated_at
+SELECT id, tag, owner_id, description, content_url, is_video, from_org, created_at, updated_at
 FROM post
 WHERE ($1::text IS NULL OR tag = $1)
 ORDER BY created_at DESC
@@ -39,7 +39,8 @@ func (q *Queries) GetEveryoneFeed(ctx context.Context, arg GetEveryoneFeedParams
 			&i.Tag,
 			&i.OwnerID,
 			&i.Description,
-			&i.ImageUrl,
+			&i.ContentUrl,
+			&i.IsVideo,
 			&i.FromOrg,
 			&i.CreatedAt,
 			&i.UpdatedAt,
@@ -55,7 +56,7 @@ func (q *Queries) GetEveryoneFeed(ctx context.Context, arg GetEveryoneFeedParams
 }
 
 const getFeedByClubID = `-- name: GetFeedByClubID :many
-SELECT id, tag, owner_id, description, image_url, from_org, created_at, updated_at
+SELECT id, tag, owner_id, description, content_url, is_video, from_org, created_at, updated_at
 FROM post
 WHERE owner_id = $1
   AND ($2::text IS NULL OR tag = $2)
@@ -89,7 +90,8 @@ func (q *Queries) GetFeedByClubID(ctx context.Context, arg GetFeedByClubIDParams
 			&i.Tag,
 			&i.OwnerID,
 			&i.Description,
-			&i.ImageUrl,
+			&i.ContentUrl,
+			&i.IsVideo,
 			&i.FromOrg,
 			&i.CreatedAt,
 			&i.UpdatedAt,
@@ -137,7 +139,7 @@ func (q *Queries) GetFeedCount(ctx context.Context, tag *string) (int64, error) 
 }
 
 const getSubscriptionFeed = `-- name: GetSubscriptionFeed :many
-SELECT DISTINCT p.id, p.tag, p.owner_id, p.description, p.image_url, p.from_org, p.created_at, p.updated_at
+SELECT DISTINCT p.id, p.tag, p.owner_id, p.description, p.content_url, p.is_video, p.from_org, p.created_at, p.updated_at
 FROM post p
 INNER JOIN subscription s ON p.owner_id = s.club_id
 WHERE s.user_id = $1
@@ -172,7 +174,8 @@ func (q *Queries) GetSubscriptionFeed(ctx context.Context, arg GetSubscriptionFe
 			&i.Tag,
 			&i.OwnerID,
 			&i.Description,
-			&i.ImageUrl,
+			&i.ContentUrl,
+			&i.IsVideo,
 			&i.FromOrg,
 			&i.CreatedAt,
 			&i.UpdatedAt,

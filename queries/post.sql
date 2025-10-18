@@ -3,10 +3,11 @@ INSERT INTO post (
     tag,
     owner_id,
     description,
-    image_url,
-    from_org
+    from_org,
+    is_video, 
+    content_url
 ) VALUES (
-    $1, $2, $3, $4, $5
+    $1, $2, $3, $4, $5, $6
 ) RETURNING *;
 
 -- name: GetPost :one
@@ -21,12 +22,13 @@ WHERE owner_id = $1 LIMIT 1;
 -- name: UpdatePost :one
 UPDATE post
 SET 
-    tag = $2,
-    description = $3,
-    image_url = $4,
-    from_org = $5,
-    updated_at = NOW()
-WHERE id = $1
+    tag = coalesce(sqlc.narg('tag'), tag),
+    description = coalesce(sqlc.narg('description'), description),
+    content_url = coalesce(sqlc.narg('content_url'), content_url),
+    is_video = coalesce(sqlc.narg('is_video'), is_video),
+    from_org = coalesce(sqlc.narg('from_org'), from_org),
+    updated_at = now()
+WHERE id = sqlc.arg('id')
 RETURNING *;
 
 -- name: DeletePost :exec

@@ -56,7 +56,8 @@ type Post struct {
 	Tag         string             `json:"tag"`
 	OwnerID     uuid.UUID          `json:"owner_id"`
 	Description string             `json:"description"`
-	ImageUrl    string             `json:"image_url"`
+	ContentUrl  string             `json:"content_url"`
+	IsVideo     bool               `json:"is_video"`
 	FromOrg     bool               `json:"from_org"`
 	CreatedAt   pgtype.Timestamptz `json:"created_at"`
 	UpdatedAt   pgtype.Timestamptz `json:"updated_at"`

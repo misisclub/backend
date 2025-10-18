@@ -36,8 +36,9 @@ func (r *PostRepository) CreatePost(ctx context.Context, req *models.CreatePostR
 		Tag:         req.Tag,
 		OwnerID:     req.OwnerID,
 		Description: req.Description,
-		ImageUrl:    req.ImageURL,
 		FromOrg:     req.FromOrg,
+		IsVideo:     req.IsVideo,
+		ContentUrl:  req.ContentURL,
 	})
 	if err != nil {
 		var pgErr *pgconn.PgError
@@ -54,7 +55,8 @@ func (r *PostRepository) CreatePost(ctx context.Context, req *models.CreatePostR
 		Tag:         post.Tag,
 		OwnerID:     post.OwnerID,
 		Description: post.Description,
-		ImageURL:    post.ImageUrl,
+		ContentURL:  post.ContentUrl,
+		IsVideo:     post.IsVideo,
 		FromOrg:     post.FromOrg,
 		CreatedAt:   post.CreatedAt.Time,
 		UpdatedAt:   post.UpdatedAt.Time,
@@ -78,7 +80,8 @@ func (r *PostRepository) GetPost(ctx context.Context, id uuid.UUID) (*models.Pos
 		Tag:         post.Tag,
 		OwnerID:     post.OwnerID,
 		Description: post.Description,
-		ImageURL:    post.ImageUrl,
+		ContentURL:  post.ContentUrl,
+		IsVideo:     post.IsVideo,
 		FromOrg:     post.FromOrg,
 		CreatedAt:   post.CreatedAt.Time,
 		UpdatedAt:   post.UpdatedAt.Time,
@@ -95,7 +98,8 @@ func (r *PostRepository) UpdatePost(ctx context.Context, id uuid.UUID, req *mode
 		ID:          id,
 		Tag:         req.Tag,
 		Description: req.Description,
-		ImageUrl:    req.ImageURL,
+		ContentUrl:  req.ContentURL,
+		IsVideo:     req.IsVideo,
 		FromOrg:     req.FromOrg,
 	})
 	if err != nil {
@@ -110,7 +114,8 @@ func (r *PostRepository) UpdatePost(ctx context.Context, id uuid.UUID, req *mode
 		Tag:         post.Tag,
 		OwnerID:     post.OwnerID,
 		Description: post.Description,
-		ImageURL:    post.ImageUrl,
+		ContentURL:  post.ContentUrl,
+		IsVideo:     post.IsVideo,
 		FromOrg:     post.FromOrg,
 		CreatedAt:   post.CreatedAt.Time,
 		UpdatedAt:   post.UpdatedAt.Time,

@@ -16,19 +16,21 @@ INSERT INTO post (
     tag,
     owner_id,
     description,
-    image_url,
-    from_org
+    from_org,
+    is_video, 
+    content_url
 ) VALUES (
-    $1, $2, $3, $4, $5
-) RETURNING id, tag, owner_id, description, image_url, from_org, created_at, updated_at
+    $1, $2, $3, $4, $5, $6
+) RETURNING id, tag, owner_id, description, content_url, is_video, from_org, created_at, updated_at
 `
 
 type CreatePostParams struct {
 	Tag         string    `json:"tag"`
 	OwnerID     uuid.UUID `json:"owner_id"`
 	Description string    `json:"description"`
-	ImageUrl    string    `json:"image_url"`
 	FromOrg     bool      `json:"from_org"`
+	IsVideo     bool      `json:"is_video"`
+	ContentUrl  string    `json:"content_url"`
 }
 
 func (q *Queries) CreatePost(ctx context.Context, arg CreatePostParams) (Post, error) {
@@ -36,8 +38,9 @@ func (q *Queries) CreatePost(ctx context.Context, arg CreatePostParams) (Post, e
 		arg.Tag,
 		arg.OwnerID,
 		arg.Description,
-		arg.ImageUrl,
 		arg.FromOrg,
+		arg.IsVideo,
+		arg.ContentUrl,
 	)
 	var i Post
 	err := row.Scan(
@@ -45,7 +48,8 @@ func (q *Queries) CreatePost(ctx context.Context, arg CreatePostParams) (Post, e
 		&i.Tag,
 		&i.OwnerID,
 		&i.Description,
-		&i.ImageUrl,
+		&i.ContentUrl,
+		&i.IsVideo,
 		&i.FromOrg,
 		&i.CreatedAt,
 		&i.UpdatedAt,
@@ -64,7 +68,7 @@ func (q *Queries) DeletePost(ctx context.Context, id uuid.UUID) error {
 }
 
 const getPost = `-- name: GetPost :one
-SELECT id, tag, owner_id, description, image_url, from_org, created_at, updated_at FROM post
+SELECT id, tag, owner_id, description, content_url, is_video, from_org, created_at, updated_at FROM post
 WHERE id = $1 LIMIT 1
 `
 
@@ -76,7 +80,8 @@ func (q *Queries) GetPost(ctx context.Context, id uuid.UUID) (Post, error) {
 		&i.Tag,
 		&i.OwnerID,
 		&i.Description,
-		&i.ImageUrl,
+		&i.ContentUrl,
+		&i.IsVideo,
 		&i.FromOrg,
 		&i.CreatedAt,
 		&i.UpdatedAt,
@@ -85,7 +90,7 @@ func (q *Queries) GetPost(ctx context.Context, id uuid.UUID) (Post, error) {
 }
 
 const getPostByOwnerId = `-- name: GetPostByOwnerId :one
-SELECT id, tag, owner_id, description, image_url, from_org, created_at, updated_at FROM post
+SELECT id, tag, owner_id, description, content_url, is_video, from_org, created_at, updated_at FROM post
 WHERE owner_id = $1 LIMIT 1
 `
 
@@ -97,7 +102,8 @@ func (q *Queries) GetPostByOwnerId(ctx context.Context, ownerID uuid.UUID) (Post
 		&i.Tag,
 		&i.OwnerID,
 		&i.Description,
-		&i.ImageUrl,
+		&i.ContentUrl,
+		&i.IsVideo,
 		&i.FromOrg,
 		&i.CreatedAt,
 		&i.UpdatedAt,
@@ -108,30 +114,33 @@ func (q *Queries) GetPostByOwnerId(ctx context.Context, ownerID uuid.UUID) (Post
 const updatePost = `-- name: UpdatePost :one
 UPDATE post
 SET 
-    tag = $2,
-    description = $3,
-    image_url = $4,
-    from_org = $5,
-    updated_at = NOW()
-WHERE id = $1
-RETURNING id, tag, owner_id, description, image_url, from_org, created_at, updated_at
+    tag = coalesce($1, tag),
+    description = coalesce($2, description),
+    content_url = coalesce($3, content_url),
+    is_video = coalesce($4, is_video),
+    from_org = coalesce($5, from_org),
+    updated_at = now()
+WHERE id = $6
+RETURNING id, tag, owner_id, description, content_url, is_video, from_org, created_at, updated_at
 `
 
 type UpdatePostParams struct {
+	Tag         *string   `json:"tag"`
+	Description *string   `json:"description"`
+	ContentUrl  *string   `json:"content_url"`
+	IsVideo     *bool     `json:"is_video"`
+	FromOrg     *bool     `json:"from_org"`
 	ID          uuid.UUID `json:"id"`
-	Tag         string    `json:"tag"`
-	Description string    `json:"description"`
-	ImageUrl    string    `json:"image_url"`
-	FromOrg     bool      `json:"from_org"`
 }
 
 func (q *Queries) UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, error) {
 	row := q.db.QueryRow(ctx, updatePost,
-		arg.ID,
 		arg.Tag,
 		arg.Description,
-		arg.ImageUrl,
+		arg.ContentUrl,
+		arg.IsVideo,
 		arg.FromOrg,
+		arg.ID,
 	)
 	var i Post
 	err := row.Scan(
@@ -139,7 +148,8 @@ func (q *Queries) UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, e
 		&i.Tag,
 		&i.OwnerID,
 		&i.Description,
-		&i.ImageUrl,
+		&i.ContentUrl,
+		&i.IsVideo,
 		&i.FromOrg,
 		&i.CreatedAt,
 		&i.UpdatedAt,

@@ -16,5 +16,5 @@ jobs:
 
       - name: Up services
         run: |
-          docker compose down && docker compose up --build -d
+          docker compose down -v && docker compose up --build -d
         working-directory: /home/gh-actor/project
